@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
    // parse command line options
    while ((c = getopt(argc, argv, ":dr")) != -1)
     switch (c) {
-     case 'd':
+	 case 'd':
       option=DECIMALTOROMAN;
      break;
      case 'r':
@@ -46,7 +46,7 @@ char* decimaltoroman(char *text)
   int num=atoi(text), i=0;
   static char roman[MAXSTRING];
   
-   while(num != 0)
+   while(num != 0 && i<MAXSTRING)
     {
 
       if (num >= 1000)       // 1000 - m
@@ -143,10 +143,10 @@ char* decimaltoroman(char *text)
 char* romantodecimal(char *text)
 {
    int deci=0;
-   int d[30], i, length=strlen(text);
+   int d[MAXSTRING], i, length=strlen(text);
    static char decimal[MAXSTRING];
  
-    for(i=0;i<length;i++){
+    for(i=0;i<length && i<MAXSTRING;i++){
     
       switch(text[i]){
          case 'm':
