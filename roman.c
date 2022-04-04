@@ -2,10 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 enum { DECIMALTOROMAN=0, ROMANTODECIMAL };
-#define MAXSTRING 100
+#define MAXCALC 115
 
 char* decimaltoroman(char *text);
 char* romantodecimal(char *text);
@@ -13,28 +12,13 @@ void showusage();
 
 int main(int argc, char *argv[]) 
 {
-   int c, option;
+   int option;
 
-   // parse command line options
-   while ((c = getopt(argc, argv, ":dr")) != -1)
-    switch (c) {
-	 case 'd':
-      option=DECIMALTOROMAN;
-     break;
-     case 'r':
-      option=ROMANTODECIMAL;
-     break;
-     case '?':
-      showusage();
-     break;
-     default:
-      abort();
-     break; 
-    }
-    if (optind==argc)
-     showusage();
+   if (argc!=2)
+    showusage();
+   option=(atol(argv[1])) ? DECIMALTOROMAN : ROMANTODECIMAL;
     
-    printf("%s\n", (option==DECIMALTOROMAN) ? decimaltoroman(argv[optind]) : romantodecimal(argv[optind]));
+    printf("%s\n", (option==DECIMALTOROMAN) ? decimaltoroman(argv[1]) : romantodecimal(argv[1]));
 
    
  return 0;
@@ -43,10 +27,10 @@ int main(int argc, char *argv[])
 // Decimal digits to Roman numerals
 char* decimaltoroman(char *text)
 {
-  int num=atoi(text), i=0;
-  static char roman[MAXSTRING];
+  int num=atol(text), i=0;
+  static char roman[MAXCALC];
   
-   while(num != 0 && i<MAXSTRING)
+   while(num != 0 && i<MAXCALC - 3)
     {
 
       if (num >= 1000)       // 1000 - m
@@ -143,10 +127,10 @@ char* decimaltoroman(char *text)
 char* romantodecimal(char *text)
 {
    int deci=0;
-   int d[MAXSTRING], i, length=strlen(text);
-   static char decimal[MAXSTRING];
+   int d[MAXCALC]= { 0 }, i, length=strlen(text);
+   static char decimal[MAXCALC];
  
-    for(i=0;i<length && i<MAXSTRING;i++){
+    for(i=0;i<length && i<MAXCALC;i++){
     
       switch(text[i]){
          case 'm':
@@ -182,6 +166,6 @@ char* romantodecimal(char *text)
 // show converter usage
 void showusage()
 {
-  printf("Usage:\n roman [options] text entry \n\nA Roman<->decimal numerals converter.\n\nOptions:\n -d\t\tdecimal to Roman\n -r\t\tRoman to decimal\n     --help\tdisplay this help\n\nDistributed under the GNU Public licence.\n");
+  printf("Usage:\n roman <decimal or Roman> \n\nA Roman<->decimal numerals converter.\n\nOptions:\n      --help\tdisplay this help\n\nDistributed under the GNU Public licence.\n");
   exit (-1);
 }
