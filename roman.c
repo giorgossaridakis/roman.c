@@ -1,4 +1,4 @@
-// Latin numerals converter
+// Roman numerals converter
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
    // parse command line options
    while ((c = getopt(argc, argv, ":dr")) != -1)
     switch (c) {
-	 case 'd':
+     case 'd':
       option=DECIMALTOROMAN;
      break;
      case 'r':
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     if (optind==argc)
      showusage();
     
-    printf("%s", (option==DECIMALTOROMAN) ? decimaltoroman(argv[optind]) : romantodecimal(argv[optind]));
+    printf("%s\n", (option==DECIMALTOROMAN) ? decimaltoroman(argv[optind]) : romantodecimal(argv[optind]));
 
    
  return 0;
