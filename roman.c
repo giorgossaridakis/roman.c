@@ -45,8 +45,6 @@ char* decimaltoroman(char *text)
 {
   int num=atoi(text), i=0;
   static char roman[MAXSTRING];
-  if (num == 0)
-   strcpy(roman, "0");
   
    while(num != 0)
     {
