@@ -2,12 +2,36 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
+// constants
+#define MAXCALC 100001
 enum { DECIMALTOROMAN=0, ROMANTODECIMAL };
-#define MAXCALC 115
+typedef long int li;
+typedef struct  {
+ const char Numeral[3];
+ const int Decimal;
+} ROMANNUMERALS;
+ROMANNUMERALS NUMERALS[13] = {  { "M", 1000 },
+                                { "CM", 900 },
+                                { "D", 500  },
+                                { "CD", 400 },
+                                { "C", 100  },
+                                { "XC", 90  },
+                                { "L", 50   },
+                                { "XL", 40  },
+                                { "X", 10   },
+                                { "X", 9    },
+                                { "V", 5    },
+                                { "IV", 4   },
+                                { "I", 1    }
+                            };
 
+
+// routine declarations
 char* decimaltoroman(char *text);
 char* romantodecimal(char *text);
+char* ctos(char c);
 void showusage();
 
 int main(int argc, char *argv[]) 
@@ -27,98 +51,21 @@ int main(int argc, char *argv[])
 // Decimal digits to Roman numerals
 char* decimaltoroman(char *text)
 {
-  int num=atol(text), i=0;
+  li num=atol(text);
+  int i;
   static char roman[MAXCALC];
+  roman[0]='\0';
   
-   while(num != 0 && i<MAXCALC - 3)
-    {
-
-      if (num >= 1000)       // 1000 - m
-        {
-           roman[i++]='M';
-           num -= 1000;
-        }
-
-        else if (num >= 900)   // 900 -  cm
-        {
-           roman[i++]='C';
-           roman[i++]='M';
-           num -= 900;
-        }        
-
-        else if (num >= 500)   // 500 - d
-        {           
-           roman[i++]='D';
-           num -= 500;
-        }
-
-        else if (num >= 400)   // 400 -  cd
-        {
-           roman[i++]='C';
-           roman[i++]='D';
-           num -= 400;
-        }
-
-        else if (num >= 100)   // 100 - c
-        {
-           roman[i++]='C';
-           num -= 100;                       
-        }
-
-        else if (num >= 90)    // 90 - xc
-        {
-           roman[i++]='X';
-           roman[i++]='C';
-           num -= 90;                                              
-        }
-
-        else if (num >= 50)    // 50 - l
-        {
-           roman[i++]='L';
-           num -= 50;                                                                     
-        }
-
-        else if (num >= 40)    // 40 - xl
-        {
-           roman[i++]='X';
-           roman[i++]='L';           
-           num -= 40;
-        }
-
-        else if (num >= 10)    // 10 - x
-        {
-           roman[i++]='X';
-           num -= 10;           
-        }
-
-        else if (num >= 9)     // 9 - ix
-        {
-           roman[i++]='X';
-           num -= 9;                         
-        }
-
-        else if (num >= 5)     // 5 - v
-        {
-           roman[i++]='V';
-           num -= 5;                                     
-        }
-
-        else if (num >= 4)     // 4 - iv
-        {
-           roman[i++]='I';
-           roman[i++]='V';
-           num -= 4;                                                            
-        }
-
-        else if (num >= 1)     // 1 - i
-        {
-           roman[i++]='I';
-           num -= 1;                                                                                   
-        }
-
-    }
+   while (num && strlen(roman)<MAXCALC-1) {
     
-   roman[i]='\0';
+    for (i=0;i<13;i++) {
+     if (num>=NUMERALS[i].Decimal) {
+      strcat(roman, NUMERALS[i].Numeral);
+      num-=NUMERALS[i].Decimal;
+      break;
+     }
+    }
+   }
    
   return &roman[0];
 }
@@ -126,41 +73,40 @@ char* decimaltoroman(char *text)
 // Roman numerals to decimal
 char* romantodecimal(char *text)
 {
-   int deci=0;
-   int d[MAXCALC]= { 0 }, i, length=strlen(text);
+   li total=0;
+   int d[MAXCALC]= { 0 }, i, i1, length=strlen(text);
    static char decimal[MAXCALC];
- 
-    for(i=0;i<length && i<MAXCALC;i++){
-    
-      switch(text[i]){
-         case 'm':
-         case 'M': d[i]=1000; break;
-         case 'd':
-         case 'D': d[i]= 500; break;
-         case 'c':
-         case 'C': d[i]= 100; break;
-         case 'l':
-         case 'L': d[i]= 50; break;
-         case 'x':
-         case 'X': d[i]= 10; break;;
-         case 'v':
-         case 'V': d[i]= 5; break;
-         case 'i':
-         case 'I': d[i]= 1;
+   
+    for (i=0;i<length && i<MAXCALC-1;i++) {
+     for (i1=0;i1<13;i1++) {
+      if (!strcmp(ctos(toupper(text[i])), NUMERALS[i1].Numeral)) {
+       d[i]=NUMERALS[i1].Decimal;
        break;
       }
-      
+     }
     }
    
-    for(i=0;i<length;i++){
-      if(i==length-1 || d[i]>=d[i+1])
-         deci += d[i];
-      else
-         deci -= d[i];
+    for(i=0;i<length;i++){      
+     if( i == length-1 || d[i] >= d[i+1])
+      total += d[i];
+     else
+      total -= d[i];
    }
-   sprintf(decimal, "%d", deci);
+
+   sprintf(decimal, "%ld", total);
    
  return &decimal[0];
+}
+
+// char to string
+char* ctos(char c)
+{
+  static char text[2];
+  
+   text[0]=c;
+   text[1]='\0';
+   
+ return &text[0];
 }
 
 // show converter usage
@@ -169,3 +115,4 @@ void showusage()
   printf("Usage:\n roman <decimal or Roman> \n\nA Roman<->decimal numerals converter.\n\nOptions:\n      --help\tdisplay this help\n\nDistributed under the GNU Public licence.\n");
   exit (-1);
 }
+
