@@ -8,23 +8,23 @@
 #define MAXCALC 100001
 enum { DECIMALTOROMAN, ROMANTODECIMAL };
 typedef long int li;
-struct ROMANNUMERALS {
+struct {
  const char Numeral[3];
  const int Decimal;
-} NUMERALS[] = {  { "M", 1000 },
-                                { "CM", 900 },
-                                { "D", 500  },
-                                { "CD", 400 },
-                                { "C", 100  },
-                                { "XC", 90  },
-                                { "L", 50   },
-                                { "XL", 40  },
-                                { "X", 10   },
-                                { "IX", 9   },
-                                { "V", 5    },
-                                { "IV", 4   },
-                                { "I", 1    }
-                 };
+} NUMERALS[] = {         { "M", 1000 },
+                         { "CM", 900 },
+                         { "D", 500  },
+                         { "CD", 400 },
+                         { "C", 100  },
+                         { "XC", 90  },
+                         { "L", 50   },
+                         { "XL", 40  },
+                         { "X", 10   },
+                         { "IX", 9   },
+                         { "V", 5    },
+                         { "IV", 4   },
+                         { "I", 1    }
+               };
 #define size 13
 
 // routine declarations
@@ -60,6 +60,7 @@ char* decimaltoroman(char *text)
       break;
      }
     }
+    
    }
    
   return &roman[0];
@@ -86,8 +87,8 @@ char* romantodecimal(char *text)
       total += d[i];
      else
       total -= d[i];
-   }
-
+    }
+   
    sprintf(decimal, "%ld", total);
    
  return &decimal[0];
