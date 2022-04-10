@@ -6,13 +6,12 @@
 
 // constants
 #define MAXCALC 100001
-enum { DECIMALTOROMAN=0, ROMANTODECIMAL };
+enum { DECIMALTOROMAN, ROMANTODECIMAL };
 typedef long int li;
-typedef struct  {
+struct ROMANNUMERALS {
  const char Numeral[3];
  const int Decimal;
-} ROMANNUMERALS;
-ROMANNUMERALS NUMERALS[13] = {  { "M", 1000 },
+} NUMERALS[] = {  { "M", 1000 },
                                 { "CM", 900 },
                                 { "D", 500  },
                                 { "CD", 400 },
@@ -21,12 +20,12 @@ ROMANNUMERALS NUMERALS[13] = {  { "M", 1000 },
                                 { "L", 50   },
                                 { "XL", 40  },
                                 { "X", 10   },
-                                { "IX", 9    },
+                                { "IX", 9   },
                                 { "V", 5    },
                                 { "IV", 4   },
                                 { "I", 1    }
-                            };
-
+                 };
+#define size 13
 
 // routine declarations
 char* decimaltoroman(char *text);
@@ -36,15 +35,11 @@ void showusage();
 
 int main(int argc, char *argv[]) 
 {
-   int option;
-
    if (argc!=2)
     showusage();
-   option=(atol(argv[1])) ? DECIMALTOROMAN : ROMANTODECIMAL;
     
-    printf("%s\n", (option==DECIMALTOROMAN) ? decimaltoroman(argv[1]) : romantodecimal(argv[1]));
+    printf("%s\n", (atol(argv[1])) ? decimaltoroman(argv[1]) : romantodecimal(argv[1]));
 
-   
  return 0;
 }
 
@@ -58,7 +53,7 @@ char* decimaltoroman(char *text)
   
    while (num && strlen(roman)<MAXCALC-1) {
     
-    for (i=0;i<13;i++) {
+    for (i=0;i<size;i++) {
      if (num>=NUMERALS[i].Decimal) {
       strcat(roman, NUMERALS[i].Numeral);
       num-=NUMERALS[i].Decimal;
@@ -78,7 +73,7 @@ char* romantodecimal(char *text)
    static char decimal[MAXCALC];
    
     for (i=0;i<length && i<MAXCALC-1;i++) {
-     for (i1=0;i1<13;i1++) {
+     for (i1=0;i1<size;i1++) {
       if (!strcmp(ctos(toupper(text[i])), NUMERALS[i1].Numeral)) {
        d[i]=NUMERALS[i1].Decimal;
        break;
