@@ -21,7 +21,7 @@ ROMANNUMERALS NUMERALS[13] = {  { "M", 1000 },
                                 { "L", 50   },
                                 { "XL", 40  },
                                 { "X", 10   },
-                                { "X", 9    },
+                                { "IX", 9    },
                                 { "V", 5    },
                                 { "IV", 4   },
                                 { "I", 1    }
@@ -86,7 +86,7 @@ char* romantodecimal(char *text)
      }
     }
    
-    for(i=0;i<length;i++){      
+    for(i=0;i<length;i++) {      
      if( i == length-1 || d[i] >= d[i+1])
       total += d[i];
      else
