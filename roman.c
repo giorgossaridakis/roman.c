@@ -6,7 +6,6 @@
 
 // constants
 #define MAXCALC 100001
-enum { DECIMALTOROMAN, ROMANTODECIMAL };
 typedef long int li;
 struct {
  const char Numeral[3];
@@ -82,7 +81,7 @@ char* romantodecimal(char *text)
      }
     }
    
-    for(i=0;i<length;i++) {      
+    for(i=0;i<length;i++) {
      if( i == length-1 || d[i] >= d[i+1])
       total += d[i];
      else
