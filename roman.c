@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 // Decimal digits to Roman numerals
 char* decimaltoroman(char *text)
 {
-  li num=atol(text);
+  li num=abs(atol(text));
   int i;
   static char roman[MAXCALC];
   roman[0]='\0';
